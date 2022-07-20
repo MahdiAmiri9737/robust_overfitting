@@ -363,7 +363,7 @@ def main():
             if args.attack == 'none':
                 delta = torch.zeros_like(X)
             else:
-                delta = attack_pgd(model, X, y, epsilon, pgd_alpha, args.attack_iters, args.restarts, args.norm, early_stop=args.eval)
+                delta = attack_pgd(model, X, y, epsilon, epsilon/4., 10, args.restarts, args.norm, early_stop=args.eval)
             delta = delta.detach()
 
             robust_output = model(normalize(torch.clamp(X + delta[:X.size(0)], min=lower_limit, max=upper_limit)))
@@ -393,7 +393,7 @@ def main():
                 if args.attack == 'none':
                     delta = torch.zeros_like(X)
                 else:
-                    delta = attack_pgd(model, X, y, epsilon, pgd_alpha, args.attack_iters, args.restarts, args.norm, early_stop=args.eval)
+                    delta = attack_pgd(model, X, y, epsilon, epsilon/4., 10, args.restarts, args.norm, early_stop=args.eval)
                 delta = delta.detach()
 
                 robust_output = model(normalize(torch.clamp(X + delta[:X.size(0)], min=lower_limit, max=upper_limit)))
